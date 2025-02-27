@@ -10,9 +10,11 @@ from jax import vmap, Array
 from jax.typing import ArrayLike
 from jax.nn import relu
 import jax.numpy as jnp
+import jax 
 
 from utils import norm, unnorm, norm_matrix, unnorm_matrix
 
+jax.config.update('jax_enable_x64', True)
 
 def jax_emulator(weights, bias, x):
     x = jnp.array(x)
