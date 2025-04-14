@@ -8,7 +8,7 @@ from keras import layers
 
 from jax import vmap, Array
 from jax.typing import ArrayLike
-from jax.nn import relu
+from jax.nn import relu, elu
 import jax.numpy as jnp
 import jax 
 
@@ -19,7 +19,7 @@ jax.config.update('jax_enable_x64', True)
 def jax_emulator(weights, bias, x):
     x = jnp.array(x)
     for w, b in zip(weights[:-1], bias[:-1]):
-        x = relu(jnp.matmul(x, w) + b)
+        x = elu(jnp.matmul(x, w) + b)
     x = jnp.matmul(x, weights[-1]) + bias[-1]
     return x
 
@@ -31,7 +31,7 @@ class Emulator:
 
     def __init__(self, emulator_kwargs = {'model_name':None, 'n_dense_layers':None, 'dense_layer_units':None, 'Nepochs':None, 'lrate':None, \
         'loss':None, 'model_dir':None, 'checkpoint_dir':None, 'inputs': ['massini', 'zini', 'yini', 'alphaMLT', 'age', 'eta', 'alphaFe'], 'outputs':['FeH', 'logLPhot', 'Teff', 'numax', 'dnuSer'],\
-        'normconsts':None}, normalised = True):
+        'normconsts':None}, normalised = True, custom_objects = None):
  
         for key, value in emulator_kwargs.items():
             setattr(self, key, value)
@@ -41,7 +41,12 @@ class Emulator:
         if self.checkpoint_dir is None:
             self.checkpoint_dir = f'{self.model_dir}/checkpoints/chk-{self.model_name}-nlayers-{self.n_dense_layers}-nunits-{self.dense_layer_units}-epochs-{self.Nepochs}-lrate-{self.lrate}-lossfunc-{self.loss}.model.keras'
 
-        self.keras_model = tf.keras.models.load_model(self.checkpoint_dir)
+        if self.custom_objects == None:
+                self.keras_model = tf.keras.models.load_model(self.checkpoint_dir)
+
+        else:
+
+                self.keras_model = tf.keras.models.load_model(self.checkpoint_dir, custom_objects = self.custom_objects)
 
         w_ = []
 
@@ -68,11 +73,11 @@ class Emulator:
 
         self.norm_stack_out = jnp.vstack([norm_mins_out, norm_maxes_out])
         
-        obs_values = np.full((len(self.outputs) + 1), None)
+        obs_values = np.full((len(self.outputs) + 3), None)
         
         obs_dict = {}
         
-        for key, value in zip(self.outputs + ['LPhot'], obs_values):
+        for key, value in zip(self.outputs + ['LPhot', 'numax', 'dnuSer'], obs_values):
             if key not in obs_dict:
                 obs_dict[key] = value
             else:
