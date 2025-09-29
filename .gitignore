@@ -1,4 +1,11 @@
 __pycache__
-grids/Chiara.hdf5
-grids/Garstec_AS09_chiara.hdf5
-
+grids
+grids/Chiara-dnufit.hdf5
+*.csv
+*.npy
+*.png
+notebooks/fake-data
+.ipynb_checkpoints
+models
+pythonscripts/checkpoints
+logs
