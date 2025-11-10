@@ -169,7 +169,7 @@ class numpy_compile(wtf_base):
 class jax_compile(wtf_base):
     import jax
     import jax.numpy as jnp
-    jax.config.update('jax_enable_x64', True)
+#    jax.config.update('jax_enable_x64', True)
     
     def __init__(self, wtf_dict):
         """

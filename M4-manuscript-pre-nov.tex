@@ -1,0 +1,333 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.3 released April 2024
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.3 April 2024
+%   Updated \pubyear to print the current year automatically
+% v3.2 July 2023
+%	Updated guidance on use of amssymb package
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Avoid using amssymb if newtxmath is enabled, as these packages can cause conflicts. newtxmatch covers the same math symbols while producing a consistent Times New Roman font. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+\newcommand{\numax}{\nu_{\mathrm{max}}}
+\newcommand{\Dnu}{\Delta\nu}
+\newcommand{\Ks}{\mathrm{K}_{\mathrm{S}}}
+\newcommand{\Teff}{T_{\mathrm{eff}}}
+\newcommand{\numaxguess}{\widetilde{\nu}_{\mathrm{max}}}
+\newcommand{\nyquist}{\nu_{\mathrm{Nyq}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[M4 hierarchical modelling]{Hierarchically Modelling Solar-like Oscillators in M4}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[Hatt E. et al]{
+Emily J. Hatt,$^{1}$\thanks{E-mail:e.hatt@bham.ac.uk}
+\\
+% List of institutions
+$^{1}$University of Birmingham
+}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Prints the current year, for the copyright statements etc. To achieve a fixed year, replace the expression with a number. 
+\pubyear{\the\year{}}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+%Globular clusters are important test-beds for stellar physics. The stars making up these objects form from the same gas cloud, and so share similar ages and chemical compositions. Accordingly, the parameter space that is explored when fitting the observed properties of the stars can be substantially reduced in extent, resulting in improved precision on the inferred stellar parameters. Additionally, globular clusters are generally old, providing probes of stellar evolution in the low-metallicity regime. In this work we study M4, the only globular cluster in which measurements of solar-like oscillations have been made in a significant number of stars. For this uniqueness, M4 has been the subject of a number of recent studies using asteroseismology to investigate mass loss, and attempt to identify mass differences between stars in the two sub-populations identified in M4. Thus far these studies have been limited by the acheivable precision on stellar mass. We aim to improve the precision on the stellar masses of solar-like oscillators in M4, alongside other important parameters. We will achieve this by modelling the stars in a hierachical sense, allowing us to define population-level hyperparameters which are shared by the stars in the sample (as we should physically expect). To this end, we exploit a neural network to emulate a grid of stellar models, to which we fit stars using a HBM. We find that the models that best represent the data include mass loss according to....
+
+\noindent
+\textbf{Context:} Stellar clusters serve as valuable test-beds for studying stellar evolution, as their member stars share common properties like age and metallicity. Historically, we would model each star independently, and then search for trends in the inferred stellar parameters. Hierarchical Bayesian modelling provides a more physically motivated framework, allowing us to treat stars as having some shared characteristics, while still maintaining a degree of independence. This approach has been shown to shrink uncertainty on the parameters of both the population-scale trends and the individual stars. \\
+\noindent
+\textbf{Aims:} We aim to apply Hierarchical Bayesian modelling to the globular cluster M4. In doing so we will explore several properties and phenomena potentially shared among cluster members such as; the age of the cluster, the efficiency of mass-loss along the RGB, the helium enrichment law and the variation in mixing length. \\
+\noindent
+\textbf{Methods:} Our HBM requires us to be able to draw fundamental stellar parameters from a continuous distribution, and predict the resulting observable properties. To avoid interpolating a grid, which can be computationally expensive, we construct a neural network to emulate a large grid of stellar models. \\
+\noindent
+\textbf{Results:} We find that the data is best represented by 1(/2) laws describing the helium enrichment, identified with dY/dZ..... Finally we find that we can(/cannot) resolve a difference in mass for stars belonging to the 2 different populations. 
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords.
+% Don't make up new ones.
+\begin{keywords}
+keyword1 -- keyword2 -- keyword3
+\end{keywords}
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+
+
+Hierarchical Bayesian models have been used in astrophysical research as a means of studying trends in large datasets. For example, characterizing the redshift distribution of galaxies \citep{2016MNRAS.460.4258L}, measuring galactic mass profiles \citep{2015ApJ...806...54E, 2018ApJ...865...72E}, and inferring the structural and phase space centre of globular clusters \citep{2024MNRAS.527.4193W}. In such a treatment, we assume that the properties of the individuals in the population are not completely independent. Rather they are governed by shared physics which describes the distribution of the individual parameters on a population scale. Accordingly, we can define multiple layers of models, approximating the impact of this shared physics on the observable properties of the population. One layer of models describes the population-scale trends, and is identified with a set of hyper-parameters. These models then inform the second layer which describes the individual objects in the population. In this way, the shared information of all of the objects in the population can be used to learn the hyper-parameters to high precision. The advantages of HBMs are not just limited to enabling inference on population parameters. Given they distribute prior information through the sample, the precision on the individual object parameters also increases. This has been exploited in a handful of works, for example \citet{2018AJ....156..145A} approximated a full hierarchical Bayesian inference to improve precision in Gaia parallax for 1.4 million stars.
+
+
+Given HBMs are a means to study populations of objects that share a number of common characteristics, they are an excellent companion to studies of stellar clusters. Having formed from the same gas cloud at around the same time, the stars in these populations share both chemical compositions and ages. Even without explicitly using a HBM, most studies of stellar clusters exploit these shared characteristics. For example, isochrone fitting is subject to the assumption that stars have the same age. Thus far, HBMs have been exploited to constrain various parameters of stellar clusters, including the proper motion and luminosity distributions in young open clusters \citep{2018A&A...617A..15O, 2021A&A...649A.159O}. 
+
+
+%The large number of free parameters involved with fitting observations of stars to grids of stellar models can make the task both computationally expensive, and can impact the precision achievable on the inferred stellar properties. Some of these issues can be solved by placing well-informed priors on model parameters. In practise this is not always possible, given we may be studying stars in a part of parameter space which has not yet been thoroughly investigated. While we may not have strong constraints on the exact values of our model parameters, we often have some expectation of the distribution of those parameters on a population-scale. One example of this is the helium content, which we have observed follows an approximately linear trend with heavy-element enrichment (the so-called helium enrichment law). Accordingly, although we may not have a strong constraint on the expected helium abundance in a random star, we know that it should belong to some distribution about an approximately linear trend. 
+
+
+
+
+
+
+%mention HBMs explicitly here 
+Another means of improving the precision on the parameters of stars in clusters is by incorporating more data for each individual. Asteroseismology, the study of stellar pulsations, offers the only observational probe sensitive to conditions deep below the photosphere of a star. Solar-like oscillators, where-in oscillations are driven and damped by surface convection, generally host a wide range of observable modes. The properties of these oscillations can be distilled to just two average parameters, the large frequency spacing ($\Dnu$) and the frequency at maximum power ($\numax$). These parameters are strongly correlated with the stellar mass, radius and (in the case of $\numax$) effective temperature. Accordingly, matching a combination of these measurements and classical observables (like effective temperature and metallicity) to grids of stellar models can enable stellar parameters to be inferred with very high precision. 
+
+
+The synergy between asteroseismic grid-based modelling and HBMs has already been established. Indeed, \citep{2021MNRAS.505.2427L} demonstrated this. By pooling just two parameters for a sample of solar-like dwarfs and subgiants, they were able to improve the precision on the inferred stellar masses by as much as a factor of two. Given in a stellar cluster we are able to pool far more than just two parameters, we should expect hierarchically modelling stars in these associations to provide an even more significant increase in precision.
+
+
+The progress that can be made by studying solar-like oscillators in stellar clusters is already well underway, enabled by the high-cadence lightcurves produced by K2 \citep{2011ApJ...729L..10B, 2011ApJ...739...13S, 2012MNRAS.419.2077M, 2012ApJ...757..190C, 2017MNRAS.472..979H, 2021MNRAS.507..496B, 2023A&A...679A..23B}. Thus far, works have been focussed on mass loss on the red giant branch, with results in a handful of clusters. Recently, solar-like oscillations were detected in a globular cluster, M4, for the first time. Subsequently, oscillations were detected in a second globular cluster, M80 \citep{2024MNRAS.527.7974H}. Thanks to the substantial amount of data analysis those works provided, we are now in a perfect place to explore the application of HBMs to these clusters. 
+
+
+%Studies of globular clusters made without asteroseismology have revealed the presence of multiple populations of stars, with each having distinct, slightly different properties. These populations were first identified as distinct tracks in the colour-magnitude diagram (CMD), and subsequently have been identified with different chemical compositions. M4 has tentatively been identified as hosting just two populations, referred to as a first and second generation. The former has abundances consistent with field stars of similar metallicity, while the latter differs in light element abundance and helium mass fraction. Thus far asteroseismic investigations of M4 have not exploited stellar models, instead opting to infer the masses and radii of stars via the asteroseismic scaling relations. Using these asteroseismic masses, Tailo et al. 2022 and Howell et al 2022 searched for differences in the average mass of first and second generation stars. They both identified that the precision on masses derived in this way was larger than any po tential real mass difference. Accordingly, no strong asteroseismic conclusions have been made regarding the differences between the two populations in M4.
+In this work we will use a HBM to model the stars in M4. In doing so, we will both study the population-scale trends and demonstrate an improvement in precision on individual stellar parameters.
+
+\section{Data}
+\subsection{Stellar Parameters}
+Given the high spatial density of stars in globular clusters, measuring the observable properties of individual stars often requires boutique analysis. M4 was recently independently studied by \citet[][T22]{2022A&A...662L...7T} and \citet[][H22]{2022MNRAS.515.3184H} using data from the K2 mission. In T22 solar-like oscillators were identified using lightcurves prepared by \citet{2019ApJS..244...12W}, while H22 performed custom aperture photometry, identifying members of M4 using Gaia DR2 proper motions. T22 and H22 identified solar-like oscillators by visual identification, with the former constructing a catalogue containing 32 red giants, and the latter 75 red giants. Our grid contained models with $\numax$ values down to a lower limit of 10$\mu$Hz. To avoid evaluating the likelihood function outside of the limits of the grid, we selected stars from T22 and H22 with $\numax$ > 15$\mu$Hz. This constituted 49 stars from H22 and 30 from T22. Cross matching by Gaia DR3 ID, the total number of unique solar-like oscillators in T22 and H22 is 53. 
+T22 and H22 both provide luminosity and effective temperature, derived from photometry. H22 uses (V-K) colours for T$_{\mathrm{eff}}$, while T22 uses (V-I). Their calculation of luminosity differs in the assumed distance modulus, with T22 taking the value 11.20 $\pm$ 0.10 as in \citet{2014MNRAS.444..392C} while H22 takes the value 11.34 $\pm$ 0.02 as in \cite{2021MNRAS.505.5957B}. We compared the values of temperature and luminosity for the stars T22 and H22 have in common, finding H22's temperatures systematically hotter by an average of 70K and luminosities systematically lower by an average of 2L$_{\odot}$. In the following we will discuss the resulting differnces in result when using either sample separately, and the results when combining the two catalogues and calibrating the luminosities and temperatures to account for the differences. We use the metallicities and helium enrichment according to \citet{2008A&A...490..625M}, which has [Fe/H] = -1.07 $\pm$ 0.01 dex and [$\alpha$/Fe] = 0.39 $\pm$ 0.05 dex.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/Temp-Lum-Maddy-Marco.png}
+    \caption{Differences in classical parameters between stars in T22 and H22}
+    \label{fig:temp-lum-diff}
+\end{figure*}
+
+\subsection{Asteroseismic parameters}
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/numax-dnu-pbjam-vs-M22-Y25.png}
+    \caption{numax, dnu residuals pbjam versus literature}
+    \label{fig:numax-dnu-diff}
+\end{figure*}
+While T22 and H22 both measured asteroseismic parameters, they did so using different methods. To ensure consistency we obtained the spectra for the stars in each set, and ran the open source software \texttt{PBjam} to recover $\numax$ and $\Dnu$. While \texttt{PBjam} was designed to measure individual mode frequencies, we only required the global asteroseismic parameters and so run in it's mode ID stage. As our targets are on the RGB, their dipole modes are likely to be significantly mixed. While \texttt{PBjam} is capable of fitting mixed modes, it requires a more computationally expensive calculation. Given we require only $\numax$ and $\Dnu$ we therefore avoid this expense by only fitting modes with $\ell$ =0, 2. This involves fitting the following model to the power spectrum,
+
+\begin{equation}
+    P(\nu) = B(\nu) + M_{0,2}(\nu),
+\end{equation}
+
+where $B(\nu)$ describes the power attributed to processes aside from the oscillations (primarily granulation and activity) and is given by,
+\begin{equation}
+    B(\nu) = \frac{a_1/b_1}{1 + (\nu/b_1)^{c_1}} + \sum_{k= 1}^{2}\frac{a/b_k}{1+(\nu/b_k)^{c_k}},
+\end{equation}
+where $a, a_1, b_1, \{b_k\}, c_1, \{c_k\}$ are free parameters.
+The signature of the oscillations is described by $M_{0, 2}(\nu)$, which consists of a sum of Lorentzian profiles at each mode frequency ($\nu_{n_p, \ell}$),
+
+\begin{equation}
+    M_{0, 2} = \sum_{n_p = n_{\mathrm{max}} - N_p/2}^{n_{\mathrm{max}} + N_p/2}\sum_{\ell = 0, 2}\frac{H_{n_p, \ell}}{1 + \frac{4}{\Gamma^2}(\nu - \nu_{n_p, \ell})^2}.
+\end{equation}
+$\Gamma$ is a free parameter while the mode heights,  $H_{n_p, \ell}$, are described by a Gaussian distribution centred on $\numax$,
+\begin{equation}
+    H_{n_p, \ell} = V_{0, \ell}^2H_{E}\exp\bigg(\frac{-(\nu_{n_p, \ell} - \numax)^2}{2W_E^2}\bigg),
+\end{equation}
+where $V_{0, \ell}^2$ is the mode visibility, set to defined values. $H_E, W_E$ and $\numax$ are all free parameters. Each mode frequency is defined by the asymptotic relation for p-mode solar-like oscillations, 
+
+\begin{equation}
+    \nu_p = \Dnu(n_p + \epsilon_p + \frac{\alpha_p}{2}(n_p - n_{\mathrm{max}})^2) + \delta\nu_{\ell, 0},
+\end{equation}
+where $\Dnu, \epsilon_p, \alpha_p$ and $\delta \nu_{\ell, 0}$ are free parameters.
+Priors on all parameters are set according to an extensive database of results for other solar-like oscillators observed by \textit{Kepler} and TESS. Prior distributions are defined according to the stars in the database which most closely match user provided values of $\Teff$, $\mathrm{B}_\mathrm{P}-\mathrm{R}_{\mathrm{P}}$ and estimated values of $\numax$ and $\Dnu$. We provided $\numax$, $\Dnu$ and $\Teff$ according to H22 and T22, and set $\mathrm{B}_\mathrm{P}-\mathrm{R}_{\mathrm{P}} \approx$ 1.2. The user is also required to provide a range on these parameters, which we took to be 150K on $\Teff$, 0.2 on $\mathrm{B}_\mathrm{P}-\mathrm{R}_{\mathrm{P}}$ and 10\% of the mean on $\numax$ and $\Dnu$. 
+
+
+We manually vetted the results from \texttt{PBjam} by comparing models drawn from the posterior distribution on the fitted parameters to the observed spectrum. Of the 53 stars, 35 had results which we identified as well constrained, accurate descriptors of the data. Those that did not were the result of a low SNR and  A comparison of the resulting $\numax$ and $\Dnu$ values to those in T22 and H22 is shown in figure \ref{fig:numax-dnu-diff}. Notably, our values of $\numax$ are systematically lower than those in both T22 and H22, with the offset having a mean value of 10\%. Our values of $\Dnu$ are in closer agreement, with no clear systematic offset. 
+\section{Methods}
+\subsection{Grid}\label{Grid}
+
+\subsection{Neural Network}
+To fully sample the posterior space, we require a way to map a continous set of input stellar parameters to their predicted output observables. A grid of stellar models alone cannot achieve this without an infinite resolution on the input parameters, and so the most commonly used approach is to interpolate between grid points. This process quickly becomes computationally inefficient when scaling to large dimensions. To avoid this expense, we constructed an artificial neural network (ANN) to emulate the grid of stellar models described in section \ref{Grid}. 
+ANN's learn to replicate complex relations between input and output parameters in a dataset. This is via a network of neurons, which are structured into layers. 
+The optimal hyperparameters for an ANN vary depending on the input and output data, and there is no fundamental definition of which combination of parameters will produce the best result. Therefore, we explored various combinations of architecture, learning rate, loss function and optimiser. We ranked the performance of each ANN by using it to predict the outputs for a test set of models from the grid that were not used in training. We then compared the predicted values of the outputs from the ANN to the true grid values, and calculated a metric describing the difference. This metric was defined as the quadrature sum of the 16th and 84th quantiles on the difference between the truth and the ANN prediction. That is, 
+
+\begin{equation}
+    \mathcal{M} = \sqrt{\frac{(Q_{16}^2 + Q_{84}^2)^2}{2}},
+\end{equation}
+where $Q_x$ is the xth quantile of the distribution of $\theta_{i, ANN} - \theta_{i, grid}$, with $\theta_{i}$ in $\{[Fe/H], L, T_{\mathrm{eff}}, \numax, \Dnu\}$. For each observable, this metric was compared to realistic uncertainties on the data for M4. We then selected the hyperparameters for the ANN which minimized the difference between $\mathcal{M}_{i}$ and the observed uncertainty for each output. 
+The ranges in number of layers, number of neurons, learning rates and loss function tested are shown in table X. We found that an ANN using 6 neurons per layer, with 128 fully connected layers, a learning rate that exponentially decayed from a starting value of 0.0001 and a weighted mean squared error loss function provided the closest match between $\mathcal{M}_{i}$ and observed uncertainty. For a full description of these choices see appendix X. 
+
+With these hyperparameters we trained our network for 100,000 epochs, using the rELU activation function. We reached prediction accuracy of ....
+The accuracy of the ANN is nearly uniform across the grid and independent of gird density, as we show in figures X, Y, Z.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/hexplot-count-logAge-logLPhot-lognumax-logdnuSer-exponent-6e-6-Adam-nlayers-6-nunits-128-epochs-5000-lrate-0.0001-lossfunc-WMSE.png}
+    \caption{Density of models}
+    \label{fig:HR-density}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/hexplot-numax-frac-logAge-logLPhot-lognumax-logdnuSer-exponent-6e-6-Adam-nlayers-6-nunits-128-epochs-5000-lrate-0.0001-lossfunc-WMSE.png}
+    \caption{ANN prediction accuracy in $\numax$}
+    \label{fig:HR-numax-frac}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/hexplot-dnu-frac-logAge-logLPhot-lognumax-logdnuSer-exponent-6e-6-Adam-nlayers-6-nunits-128-epochs-5000-lrate-0.0001-lossfunc-WMSE.png}
+    \caption{ANN prediction accuracy in $\Dnu$}
+    \label{fig:HR-density}
+\end{figure}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/residuals.png}
+    \caption{ANN prediction residuals}
+    \label{fig:residuals}
+\end{figure*}
+
+\subsection{HBM}
+Each star is defined by the fundamental parameters $\theta_{*} = \{M_{ini, *}, Z_{ini, *}, Y_{ini, *}, \tau_{*}, [\alpha/Fe]_{*}, \alpha_{MLT, *}, \eta_{R, *}\}$. In a globular cluster, it is expected stars form within a period of a few tens of Myrs, which is an order of magnitude smaller than the precision on age we expect to obtain according to the observables. Similarly, the spread on initial chemical composition is expected to be small. Additionally, the stars in our sample occupy a relatively small range in evolutionary status, with a spread on $\Teff$ of X and on $\numax$ of Y. Accordingly, we expect that they should favour similar values of $\alpha_{MLT}$. Therefore, we define our model such that all parameters expect for mass are drawn from the same cluster-wide distribution - that it $\Theta_{M4} = \{Z_{ini, *}, Y_{ini, *}, \tau_{*}, [\alpha/Fe]_{*}, \alpha_{MLT, *}, \eta_{R, *}\}$.
+\begin{table}
+    \begin{center}
+        
+        \begin{tabular}{|c|c|c|}%{lcccr}% four columns, alignment for each
+                \hline
+                Property& Hyperprior & Hyperparameters \\
+                \hline
+                $Y_{i}$ & $\mathcal{N}(\mu = Y_{P} + \Delta Y/\Delta Z \cdot Z_{i}, \sigma_{Y})$ & $\Delta Y/\Delta Z$, $Y_{P}$, $\sigma Y$\\
+                $\tau_i$ & $\mathcal{N}(\mu_{\tau}, \sigma_{\tau})$ & $\mu_{\tau}$, $\sigma_{\tau}$\\
+                $\alpha_{MLT, i}$ & $\mathcal{N}(\mu_{\alpha}, \sigma_{\alpha})$ & $\mu_{\alpha}$, $\sigma_{\alpha}$\\
+                $\eta_{i}$ & $\mathcal{N}(\mu_{\eta}, \sigma_{\eta})$ & $\mu_{\eta}$, $\sigma_{\eta}$\\
+                $[\alpha/Fe]_{i}$ & $\mathcal{N}(\mu_{[\alpha/Fe]}, \sigma_{[\alpha/Fe]})$ & $\mu_{[\alpha/Fe]}$, $\sigma_{[\alpha/Fe]}$\\ 
+                \hline
+
+        \end{tabular}
+        \caption{The number of stars for which N modes were recovered successfully.}
+        \label{tab:recovery}
+        \end{center}
+\end{table}
+
+\section{Results}
+
+\subsection{Stellar Parameters}
+
+\subsection{Population Hyperparameters}
+
+\section{Discussion}
+
+
+
+\subsection{Helium Enrichment}
+
+\subsection{Mass loss}
+
+\section{Conclusions}
+
+
+
+\section*{Acknowledgements}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Data Availability}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+\bibliographystyle{mnras}
+\bibliography{bibliography} % if your bibtex file is called example.bib
+
+
+% Alternatively you could enter them by hand, like this:
+% This method is tedious and prone to error if you have lots of references
+%\begin{thebibliography}{99}
+%\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
+%Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
+%\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
+%Others S., 2012, Journal of Interesting Stuff, 17, 198
+%\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section{Some extra material}
+
+If you want to present additional material which would interrupt the flow of the main paper,
+it can be placed in an Appendix which appears after the list of references.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex
